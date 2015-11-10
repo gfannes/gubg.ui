@@ -38,6 +38,9 @@ task :declare do
 end
 
 task :define => :declare do
+end
+
+task :test => :define do
     exe = Build::Executable.new('test.exe')
     exe.add_include_path(shared_dir('include'))
     exe.add_sources('src/test/test.cpp')
