@@ -33,7 +33,7 @@ task :declare do
             end
             publish('build/lib', '*.a', dst: 'lib'){|fn|fn.gsub(/-s\.a$/, '.a')}
             publish('include', '**/*', dst: 'include')
-        end
+        end if os == :linux
     end
 end
 
