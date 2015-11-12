@@ -31,8 +31,8 @@ task :declare do
                     sh "touch #{build_ok_fn}"
                 end
             end
-            publish('build/lib', '*.a', dst: 'lib'){|fn|fn.gsub(/-s\.a$/, '.a')}
-            publish('include', '**/*', dst: 'include')
+            publish('build/lib', pattern: '*.a', dst: 'lib'){|fn|fn.gsub(/-s\.a$/, '.a')}
+            publish('include', pattern: '**/*', dst: 'include')
         end if os == :linux
     end
 end
