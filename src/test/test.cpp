@@ -1,6 +1,8 @@
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
+#include <thread>
+#include <chrono>
 #include <iostream>
 
 namespace app { 
@@ -20,6 +22,7 @@ namespace app {
             bool onStart() override
             {
                 std::cout << "onStart" << std::endl;
+                setProcessingInterval(sf::milliseconds(10));
                 return true;
             }
             void onStop() override
@@ -69,6 +72,7 @@ int main()
         window.clear();
         window.draw(shape);
         window.display();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     return 0;
