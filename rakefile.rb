@@ -32,6 +32,7 @@ task :declare do
                 end
             end
             publish('build/lib', pattern: '*.a', dst: 'lib'){|fn|fn.gsub(/-s\.a$/, '.a')}
+            # publish('build/lib', pattern: '*.a', dst: 'lib')
             publish('include', pattern: '**/*', dst: 'include')
         end if os == :linux
     end
@@ -40,11 +41,14 @@ end
 task :define => :declare do
 end
 
-task :test => :define do
+task :test do
     exe = Build::Executable.new('test.exe')
+    exe.set_cache_dir('.cache')
     exe.add_include_path(shared_dir('include'))
     exe.add_sources('src/test/test.cpp')
     exe.add_library_path(shared_dir('lib'))
-    exe.add_library('sfml-system', 'sfml-window', 'sfml-graphics')
+    sfml_libs = %w[window graphics audio network system].map{|n|"sfml-#{n}"}
+    exe.add_library(sfml_libs)
+    exe.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread])
     exe.run
 end
