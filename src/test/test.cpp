@@ -1,9 +1,24 @@
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
+#include <iostream>
+
+namespace app { 
+    class Window: public sf::RenderWindow
+    {
+        public:
+            Window(): sf::RenderWindow(sf::VideoMode(800, 600), "test") {}
+
+        protected:
+            void onResize() override
+            {
+                std::cout << "Window was resized" << std::endl;
+            }
+    };
+} 
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "test");
+    app::Window window;
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
