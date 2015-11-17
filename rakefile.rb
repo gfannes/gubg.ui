@@ -49,6 +49,6 @@ task :test do
     exe.add_library_path(shared_dir('lib'))
     sfml_libs = %w[window graphics audio network system].map{|n|"sfml-#{n}"}
     exe.add_library(sfml_libs)
-    exe.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread])
+    exe.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread openal])
     exe.run
 end
