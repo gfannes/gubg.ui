@@ -39,6 +39,7 @@ task :declare do
 end
 
 task :define => :declare do
+    publish('src', pattern: '**/*.hpp', dst: 'include')
 end
 
 task :test do
