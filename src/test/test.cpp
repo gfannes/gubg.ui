@@ -37,6 +37,14 @@ namespace app {
             Window()
             {
                 sf::RenderWindow::create(sf::VideoMode(800, 600), "test");
+                font_.loadFromFile("DejaVuSansMono.ttf");
+            }
+
+            void draw()
+            {
+                std::cout << "Drawing the window" << std::endl;
+                std::cout << "Font: " << font_.getInfo().family << std::endl;
+                sf::RenderWindow::draw(text_);
             }
 
         protected:
@@ -44,6 +52,11 @@ namespace app {
             {
                 std::cout << "Window was created" << std::endl;
                 recorder.start();
+                text_.setFont(font_);
+                text_.setCharacterSize(50);
+                text_.setColor(sf::Color::Green);
+                text_.setPosition(200, 200);
+                text_.setString("test");
             }
             void onResize() override
             {
@@ -51,14 +64,14 @@ namespace app {
             }
         private:
             app::Recorder recorder;
+            sf::Font font_;
+            sf::Text text_;
     };
 } 
 
 int main()
 {
     app::Window window;
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
 
     while (window.isOpen())
     {
@@ -70,7 +83,7 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+        window.draw();
         window.display();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }

@@ -36,6 +36,7 @@ task :declare do
             publish('include', pattern: '**/*', dst: 'include')
         end if os == :linux
     end
+    publish('fonts', dst: 'fonts')
 end
 
 task :define => :declare do
@@ -50,6 +51,6 @@ task :test do
     exe.add_library_path(shared_dir('lib'))
     sfml_libs = %w[window graphics audio network system].map{|n|"sfml-#{n}"}
     exe.add_library(sfml_libs)
-    exe.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread openal])
+    exe.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread openal freetype])
     exe.run
 end
