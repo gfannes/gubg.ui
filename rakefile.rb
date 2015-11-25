@@ -1,6 +1,7 @@
 require(File.join(ENV['gubg'], 'shared'))
 include GUBG
 require('gubg/build/Executable')
+require('gubg/build/Library')
 
 task :default => :help
 task :help do
@@ -17,15 +18,7 @@ task :declare do
             Dir.chdir('build') do
                 if !File.exist?(build_ok_fn)
                     #For ubuntu, these packages should be installed:
-                    #sudo apt-get install freeglut3
-                    #sudo apt-get install freeglut3-dev
-                    #sudo apt-get install libxcb-image0
-                    #sudo apt-get install libxcb-image0-dev
-                    #sudo apt-get install libudev-dev
-                    #sudo apt-get install libjpeg-dev
-                    #sudo apt-get install libopenal-dev
-                    #sudo apt-get install libvorbis-dev
-                    #sudo apt-get install libflac-dev
+                    #sudo apt-get install freeglut3 freeglut3-dev libxcb-image0 libxcb-image0-dev libudev-dev libjpeg-dev libopenal-dev libvorbis-dev libflac-dev libfreetype6-dev
                     sh 'cmake .. -DBUILD_SHARED_LIBS=FALSE'
                     sh 'make -j 4'
                     sh "touch #{build_ok_fn}"
@@ -34,6 +27,19 @@ task :declare do
             publish('build/lib', pattern: '*.a', dst: 'lib'){|fn|fn.gsub(/-s\.a$/, '.a')}
             # publish('build/lib', pattern: '*.a', dst: 'lib')
             publish('include', pattern: '**/*', dst: 'include')
+        end if os == :linux
+        git_clone('https://github.com/nsf', 'termbox') do
+            if !File.exist?(build_ok_fn)
+                publish('src', pattern: '*.h', dst: 'include')
+                lib = Build::Library.new('termbox')
+                lib.set_cache_dir('.cache')
+                lib.add_include_path(shared_dir('include'))
+                lib.add_sources('src/termbox.c')
+                lib.add_sources('src/utf8.c')
+                lib.build
+                publish(lib.lib_filename, dst: 'lib')
+                sh "touch #{build_ok_fn}"
+            end
         end if os == :linux
     end
     publish('fonts', dst: 'fonts')
