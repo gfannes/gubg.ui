@@ -50,7 +50,7 @@ task :define => :declare do
 end
 
 task :test do
-    exe = Build::Executable.new('test.exe')
+    exe = Build::Executable.new('test')
     exe.set_cache_dir('.cache')
     exe.add_include_path(shared_dir('include'))
     exe.add_sources('src/test/test.cpp')
