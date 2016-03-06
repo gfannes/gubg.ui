@@ -2,11 +2,17 @@
 #define HEADER_imui_Context_hpp_ALREADY_INCLUDED
 
 namespace imui { 
-    class Context
-    {
-        public:
-        private:
-    };
+
+    template <typename Backend>
+        class Context
+        {
+            public:
+                Context(typename Backend::Window &window): backend_(window) {}
+
+            private:
+                Backend &backend_;
+        };
+
 } 
 
 #endif

@@ -43,20 +43,22 @@ task :declare do
         end if os == :linux
     end
     publish('fonts', dst: 'fonts')
+    publish('src/imui', dst: 'include/imui', pattern: '**/*.hpp')
 end
 
 task :define => :declare do
     publish('src', pattern: '**/*.hpp', dst: 'include')
 end
 
-task :test do
-    exe = Build::Executable.new('test')
-    exe.set_cache_dir('.cache')
-    exe.add_include_path(shared_dir('include'))
-    exe.add_sources('src/test/test.cpp')
-    exe.add_library_path(shared_dir('lib'))
+task :test => :declare do
+    ut = Build::Executable.new('test')
+    ut.set_cache_dir('.cache')
+    ut.add_include_path(shared_dir('include'))
+    ut.add_sources(FileList.new('src/test/*_tests.cpp'))
+    ut.add_sources(shared_file('source/catch_runner.cpp'))
+    ut.add_library_path(shared_dir('lib'))
     sfml_libs = %w[window graphics audio network system].map{|n|"sfml-#{n}"}
-    exe.add_library(sfml_libs)
-    exe.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread openal freetype])
-    exe.run
+    ut.add_library(sfml_libs)
+    ut.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread openal freetype])
+    ut.run
 end
