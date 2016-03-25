@@ -6,7 +6,7 @@
 namespace imui { namespace backend { 
 
     namespace sfml { 
-        using Window = ::sf::Window;
+        using Window = ::sf::RenderWindow;
     } 
 
     class SFML

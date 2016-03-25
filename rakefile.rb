@@ -56,6 +56,7 @@ task :test => :declare do
     ut.add_include_path(shared_dir('include'))
     ut.add_sources(FileList.new('src/test/*_tests.cpp'))
     ut.add_sources(shared_file('source/catch_runner.cpp'))
+    ut.add_sources(FileList.new(shared('include', '**/*.hpp')))
     ut.add_library_path(shared_dir('lib'))
     sfml_libs = %w[window graphics audio network system].map{|n|"sfml-#{n}"}
     ut.add_library(sfml_libs)

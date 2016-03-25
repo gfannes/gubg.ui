@@ -39,6 +39,7 @@ namespace  {
 TEST_CASE("imui::Context tests", "[ut][imui]")
 {
     Window window;
+    imui::Context<imui::backend::SFML> ctx(window);
 
     while (window.isOpen())
     {
