@@ -13,14 +13,15 @@ namespace  {
     class Window: public sf::RenderWindow
     {
         public:
-            Window()
+            Window(): ctx_(*this)
             {
-                sf::RenderWindow::create(sf::VideoMode(800, 600), "imui::Context");
+                sf::RenderWindow::create(sf::VideoMode(400, 600), "imui::Context");
             }
 
             void draw()
             {
-                std::cout << "Drawing the window" << std::endl;
+                /* std::cout << "Drawing the window" << std::endl; */
+                ctx_.fill();
             }
 
         protected:
@@ -33,13 +34,13 @@ namespace  {
                 std::cout << "Window was resized" << std::endl;
             }
         private:
+            imui::Context<imui::backend::SFML> ctx_;
     };
 } 
 
 TEST_CASE("imui::Context tests", "[ut][imui]")
 {
     Window window;
-    imui::Context<imui::backend::SFML> ctx(window);
 
     while (window.isOpen())
     {

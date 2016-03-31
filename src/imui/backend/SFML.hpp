@@ -6,18 +6,21 @@
 namespace imui { namespace backend { 
 
     namespace sfml { 
-        using Window = ::sf::RenderWindow;
+        using RenderWindow = ::sf::RenderWindow;
     } 
 
     class SFML
     {
         public:
-            using Window = sfml::Window;
+            using Native = sfml::RenderWindow;
 
-            SFML(Window &window): window_(window) {}
+            SFML(Native &n): rw_(n) {}
+
+            Native &native() {return rw_;}
+            const Native &native() const {return rw_;}
 
         private:
-            Window &window_;
+            sfml::RenderWindow &rw_;
     };
 
 } } 
