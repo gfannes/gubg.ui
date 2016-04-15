@@ -1,7 +1,7 @@
 #ifndef HEADER_imui_Scope_hpp_ALREADY_INCLUDED
 #define HEADER_imui_Scope_hpp_ALREADY_INCLUDED
 
-#include "imui/Tile.hpp"
+#include "imui/Reactor.hpp"
 #include "imui/ID.hpp"
 #include <map>
 
@@ -12,20 +12,20 @@ namespace imui {
         {
             public:
                 using Self = Scope<Context>;
-                using Tile = imui::Tile<Self>;
+                using Reactor = imui::Reactor<Self>;
 
                 Scope(Context &ctx): ctx_(ctx) {}
 
-                Tile &goc(const ID &id)
+                Reactor &operator()(const ID &id)
                 {
-                    auto it = tiles_.find(id);
-                    if
+                    auto p = reactors_.emplace(id, *this);
+                    return p.first->second;
                 }
 
             private:
                 Context &ctx_;
-                using Tiles = std::map<ID, Tile>;
-                Tiles tiles_;
+                using Reactors = std::map<ID, Reactor>;
+                Reactors reactors_;
         };
 
 } 

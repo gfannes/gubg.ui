@@ -15,7 +15,8 @@ namespace imui {
 
                 using Context = imui::Context<Backend>;
                 using Scope = imui::Scope<Context>;
-                using Tile = imui::Tile<Scope>;
+                using Reactor = imui::Reactor<Context>;
+                using Tile = imui::Tile;
 
             private:
         };

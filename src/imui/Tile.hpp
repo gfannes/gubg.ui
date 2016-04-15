@@ -5,15 +5,12 @@
 
 namespace imui { 
 
-    template <typename Scope>
-        class Tile
-        {
-            public:
-                Tile(Scope &scope): scope_(scope) {}
+    class Tile
+    {
+        public:
 
-            private:
-                Scope &scope_;
-        };
+        private:
+    };
 
 } 
 
