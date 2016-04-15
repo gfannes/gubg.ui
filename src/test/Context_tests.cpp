@@ -21,7 +21,7 @@ namespace  {
             void draw()
             {
                 /* std::cout << "Drawing the window" << std::endl; */
-                ctx_.fill();
+                /* ctx_.fill(); */
             }
 
         protected:
@@ -38,7 +38,7 @@ namespace  {
     };
 } 
 
-TEST_CASE("imui::Context tests", "[ut][imui]")
+TEST_CASE("imui::Context tests", "[mt][ctx]")
 {
     Window window;
 

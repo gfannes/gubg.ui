@@ -12,16 +12,6 @@ namespace imui {
             public:
                 Context(typename Backend::Native &n): backend_(n) {}
 
-                void fill()
-                {
-                    using namespace sf;
-                    S("Ctx");
-                    const auto &v = backend_.native();
-                    L(STREAM(v.getSize().x, v.getSize().y));
-                    RectangleShape rect(Vector2f(990,990));
-                    backend_.native().draw(rect);
-                }
-
                 AABB_float aabb;
 
             private:

@@ -61,5 +61,8 @@ task :test => :declare do
     sfml_libs = %w[window graphics audio network system].map{|n|"sfml-#{n}"}
     ut.add_library(sfml_libs)
     ut.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread openal freetype])
-    ut.run
+    options = %w[-a -d yes]
+    options << '[ut]'
+    # options << '[mt]'
+    ut.run(options)
 end
