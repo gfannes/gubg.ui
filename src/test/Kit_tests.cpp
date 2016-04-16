@@ -6,6 +6,7 @@ using namespace std;
 
 TEST_CASE("imui::Kit tests", "[ut][kit]")
 {
+    S("test");
     using Kit = imui::Kit<imui::backend::Test>;
 
     imui::backend::test::Native backend(100, 200);
@@ -22,4 +23,6 @@ TEST_CASE("imui::Kit tests", "[ut][kit]")
         REQUIRE(bs[0]);
         REQUIRE(!bs[1]);
     }
+    auto &reactor = scope(42);
+    REQUIRE(ctx.process());
 }

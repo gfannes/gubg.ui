@@ -12,6 +12,8 @@ namespace imui {
         class Context
         {
             private:
+                static constexpr const char *logns = "Context";
+
                 using Self = Context<Backend>;
                 using Scope = imui::Scope<Self>;
                 using Scopes = std::set<Scope*>;
@@ -21,8 +23,8 @@ namespace imui {
 
                 bool process()
                 {
-                    MSS_BEGIN(bool);
-                    for (auto scope: scopes)
+                    MSS_BEGIN(bool, logns);
+                    for (auto scope: scopes_)
                     {
                         MSS(!!scope);
                     }
