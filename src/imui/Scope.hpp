@@ -14,7 +14,15 @@ namespace imui {
                 using Self = Scope<Context>;
                 using Reactor = imui::Reactor<Self>;
 
-                Scope(Context &ctx): ctx_(ctx) {}
+                Scope(Context &ctx)
+                    : ctx_(ctx)
+                {
+                    ctx_.insert(this);
+                }
+                ~Scope()
+                {
+                    ctx_.erase(this);
+                }
 
                 Reactor &operator()(const ID &id)
                 {
