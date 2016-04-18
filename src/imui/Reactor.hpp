@@ -2,16 +2,19 @@
 #define HEADER_imui_Reactor_hpp_ALREADY_INCLUDED
 
 #include "imui/Tile.hpp"
+#include "imui/State.hpp"
+#include "imui/Events.hpp"
+#include "gubg/debug.hpp"
+#include <ostream>
 
 namespace imui { 
-
-    struct Init
-    {
-    };
 
     template <typename Scope>
         class Reactor
         {
+            private:
+                static constexpr const char *logns = "Reactor";
+
             public:
                 Tile tile;
 
@@ -20,24 +23,52 @@ namespace imui {
                 template <typename Callback>
                     Reactor &on(Init, Callback cb)
                     {
+                        S(logns);
                         if (state_ == State::Fresh)
                         {
+                            L("We are still fresh: do initialization");
                             cb(tile);
-                            state_ = State::Initialized;
+                            set_state(State::Initialized);
+                        }
+                        return *this;
+                    }
+                template <typename Callback>
+                    Reactor &on(Hot, Callback cb)
+                    {
+                        S(logns);
+                        if (state_ == State::Hot)
+                        {
+                            L("We are hot");
+                            cb(tile);
                         }
                         return *this;
                     }
 
-            private:
-                enum class State
+                void stream(std::ostream &os) const
                 {
-                    Fresh, Initialized,
-                };
+                    os << this << ": State: " << state_;
+                }
 
+                State state() const {return state_;}
+                void set_state(State s)
+                {
+                    S(logns);
+                    state_ = s;
+                    L("Reactor " << this << " is now " << state_);
+                }
+
+            private:
                 State state_;
 
                 Scope &scope_;
         };
+
+    template <typename Scope>
+        std::ostream &operator<<(std::ostream &os, const Reactor<Scope> &reactor)
+        {
+            reactor.stream(os);
+            return os;
+        }
 
 } 
 

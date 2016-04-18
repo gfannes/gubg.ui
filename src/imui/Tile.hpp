@@ -5,7 +5,7 @@
 
 namespace imui { 
 
-    class Tile
+    class Tile: public AABB_float
     {
         public:
 

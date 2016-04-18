@@ -10,6 +10,9 @@ namespace imui {
     template <typename Context>
         class Scope
         {
+            private:
+                static constexpr const char *logns = "Scope";
+
             public:
                 using Self = Scope<Context>;
                 using Reactor = imui::Reactor<Self>;
@@ -26,9 +29,20 @@ namespace imui {
 
                 Reactor &operator()(const ID &id)
                 {
-                    auto p = reactors_.emplace(id, *this);
-                    return p.first->second;
+                    S(logns);
+                    Reactor &reactor = reactors_.emplace(id, *this).first->second;
+                    L("Before processing by " << reactor);
+                    ctx_.process(reactor);
+                    L("After processing by ctx: " << reactor);
+                    return reactor;
                 }
+
+                template <typename Ftor>
+                    void each_reactor(Ftor ftor)
+                    {
+                        for (auto &p: reactors_)
+                            ftor(p.second);
+                    }
 
             private:
                 Context &ctx_;

@@ -5,6 +5,7 @@
 #include "imui/Scope.hpp"
 #include "gubg/mss.hpp"
 #include <set>
+#include <cassert>
 
 namespace imui { 
 
@@ -17,17 +18,40 @@ namespace imui {
                 using Self = Context<Backend>;
                 using Scope = imui::Scope<Self>;
                 using Scopes = std::set<Scope*>;
+                using Reactor = imui::Reactor<Scope>;
 
             public:
                 Context(typename Backend::Native &n): backend_(n) {}
 
-                bool process()
+                bool reduce()
                 {
                     MSS_BEGIN(bool, logns);
-                    for (auto scope: scopes_)
+
+                    auto update_state = [&](Reactor &reactor)
                     {
-                        MSS(!!scope);
+                        L(reactor);
+                        if (last_hot_ == &reactor)
+                        {
+                            reactor.set_state(State::Hot);
+                        }
+                    };
+                    each_reactor(update_state);
+
+                    last_hot_ = nullptr;
+
+                    MSS_END();
+                }
+
+                //During UI drawing and processing, all Reactors are sent to the Context via this way.
+                bool process(Reactor &reactor)
+                {
+                    MSS_BEGIN(bool);
+                    if (reactor.state() == State::Fresh)
+                    {
+                        MSS_RETURN_OK();
                     }
+                    if (reactor.tile.contains(mouse_[0], mouse_[1]))
+                        last_hot_ = &reactor;
                     MSS_END();
                 }
 
@@ -36,9 +60,21 @@ namespace imui {
 
                 AABB_float aabb;
 
+                template <typename Ftor>
+                    void each_reactor(Ftor ftor)
+                    {
+                        for (auto scope: scopes_)
+                        {
+                            assert(!!scope);
+                            scope->each_reactor(ftor);
+                        }
+                    }
+
             private:
                 Backend backend_;
                 Scopes scopes_;
+                Reactor *last_hot_ = nullptr;
+                std::array<unsigned int, 2> mouse_{};
         };
 
 } 

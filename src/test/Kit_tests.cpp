@@ -14,15 +14,43 @@ TEST_CASE("imui::Kit tests", "[ut][kit]")
 
     Kit::Scope scope(ctx);
 
-    SECTION("Init event should occur only once")
+    REQUIRE(ctx.reduce());
+
     {
+        auto &reactor = scope(42);
+    }
+
+    REQUIRE(ctx.reduce());
+
+    {
+        L("Initialization");
         bitset<2> bs;
         auto &reactor = scope(42);
-        reactor.on(imui::Init(), [&](Kit::Tile &){bs.set(0);});
+        reactor.on(imui::Init(), [&](Kit::Tile &tile){bs.set(0);tile.set_aabb(0,0, 1,1);});
         reactor.on(imui::Init(), [&](Kit::Tile &){bs.set(1);});
         REQUIRE(bs[0]);
         REQUIRE(!bs[1]);
     }
-    auto &reactor = scope(42);
-    REQUIRE(ctx.process());
+
+    REQUIRE(ctx.reduce());
+
+    {
+        L("Check for hot");
+        auto &reactor = scope(42);
+        bool is_hot = false;
+        reactor.on(imui::Hot(), [&](Kit::Tile &){is_hot = true;});
+        REQUIRE(!is_hot);
+    }
+
+    REQUIRE(ctx.reduce());
+
+    {
+        L("Check for hot again");
+        auto &reactor = scope(42);
+        bool is_hot = false;
+        reactor.on(imui::Hot(), [&](Kit::Tile &){is_hot = true;});
+        REQUIRE(is_hot);
+    }
+
+    REQUIRE(ctx.reduce());
 }
