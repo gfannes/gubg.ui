@@ -67,7 +67,9 @@ task :test => :declare do
     ut.add_library(sfml_libs)
     ut.add_library(%w[xcb xcb-randr xcb-image udev jpeg GL GLU X11 X11-xcb pthread openal freetype])
     options = %w[-a -d yes]
-    options << '[ut]'
-    # options << '[mt]'
+    case :mt
+    when :ut then options << '[ut]'
+    when :mt then options << '[mt]'
+    end
     ut.run(options)
 end

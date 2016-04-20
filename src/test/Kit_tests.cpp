@@ -14,13 +14,15 @@ TEST_CASE("imui::Kit tests", "[ut][kit]")
 
     Kit::Scope scope(ctx);
 
-    REQUIRE(ctx.reduce());
+    Kit::Context::MousePosition mouse{};
+
+    REQUIRE(ctx.process(mouse));
 
     {
         auto &reactor = scope(42);
     }
 
-    REQUIRE(ctx.reduce());
+    REQUIRE(ctx.process(mouse));
 
     {
         L("Initialization");
@@ -32,7 +34,7 @@ TEST_CASE("imui::Kit tests", "[ut][kit]")
         REQUIRE(!bs[1]);
     }
 
-    REQUIRE(ctx.reduce());
+    REQUIRE(ctx.process(mouse));
 
     {
         L("Check for hot");
@@ -42,7 +44,7 @@ TEST_CASE("imui::Kit tests", "[ut][kit]")
         REQUIRE(!is_hot);
     }
 
-    REQUIRE(ctx.reduce());
+    REQUIRE(ctx.process(mouse));
 
     {
         L("Check for hot again");
@@ -52,5 +54,5 @@ TEST_CASE("imui::Kit tests", "[ut][kit]")
         REQUIRE(is_hot);
     }
 
-    REQUIRE(ctx.reduce());
+    REQUIRE(ctx.process(mouse));
 }

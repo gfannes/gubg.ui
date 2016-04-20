@@ -3,6 +3,7 @@
 
 #include "imui/AABB.hpp"
 #include "imui/Scope.hpp"
+#include "gubg/Transition.hpp"
 #include "gubg/mss.hpp"
 #include <set>
 #include <cassert>
@@ -21,23 +22,16 @@ namespace imui {
                 using Reactor = imui::Reactor<Scope>;
 
             public:
+                using MousePosition = std::array<unsigned int, 2>;
+
                 Context(typename Backend::Native &n): backend_(n) {}
 
-                bool reduce()
+                bool process(const MousePosition &mouse)
                 {
                     MSS_BEGIN(bool, logns);
 
-                    auto update_state = [&](Reactor &reactor)
-                    {
-                        L(reactor);
-                        if (last_hot_ == &reactor)
-                        {
-                            reactor.set_state(State::Hot);
-                        }
-                    };
-                    each_reactor(update_state);
-
-                    last_hot_ = nullptr;
+                    mouse_.push(mouse);
+                    last_hot_.push();
 
                     MSS_END();
                 }
@@ -50,8 +44,15 @@ namespace imui {
                     {
                         MSS_RETURN_OK();
                     }
-                    if (reactor.tile.contains(mouse_[0], mouse_[1]))
-                        last_hot_ = &reactor;
+
+                    const auto &mouse = mouse_.current();
+                    if (reactor.tile.contains(mouse[0], mouse[1]))
+                    {
+                        last_hot_.current() = &reactor;
+                        if (last_hot_.same())
+                            reactor.set_state(State::Hot);
+                    }
+
                     MSS_END();
                 }
 
@@ -73,8 +74,12 @@ namespace imui {
             private:
                 Backend backend_;
                 Scopes scopes_;
-                Reactor *last_hot_ = nullptr;
-                std::array<unsigned int, 2> mouse_{};
+
+                using MouseTrans = gubg::Transition<MousePosition>;
+                MouseTrans mouse_;
+
+                using LastHot = gubg::Transition<Reactor *>;
+                LastHot last_hot_;
         };
 
 } 

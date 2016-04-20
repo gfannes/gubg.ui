@@ -2,7 +2,7 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 #include "catch.hpp"
-#include "imui/Context.hpp"
+#include "imui/Kit.hpp"
 #include "imui/backend/SFML.hpp"
 #include "SFML/Graphics.hpp"
 #include <thread>
@@ -34,7 +34,8 @@ namespace  {
                 std::cout << "Window was resized" << std::endl;
             }
         private:
-            imui::Context<imui::backend::SFML> ctx_;
+            using Kit = imui::Kit<imui::backend::SFML>;
+            Kit::Context ctx_;
     };
 } 
 
