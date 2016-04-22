@@ -9,16 +9,16 @@
 
 namespace imui { 
 
-    template <typename Scope>
+    template <typename Mgr>
         class Reactor
         {
             private:
-                static constexpr const char *logns = "Reactor";
+                static constexpr const char *logns = (false ? "Reactor" : nullptr);
 
             public:
                 Tile tile;
 
-                Reactor(Scope &scope): scope_(scope), state_(State::Fresh) {}
+                Reactor(Mgr &mgr): mgr_(mgr), state_(State::Fresh) {}
 
                 template <typename Callback>
                     Reactor &on(Init, Callback cb)
@@ -27,7 +27,7 @@ namespace imui {
                         if (state_ == State::Fresh)
                         {
                             L("We are still fresh: do initialization");
-                            cb(tile);
+                            cb();
                             set_state(State::Initialized);
                         }
                         return *this;
@@ -39,7 +39,7 @@ namespace imui {
                         if (state_ == State::Hot)
                         {
                             L("We are hot");
-                            cb(tile);
+                            cb();
                         }
                         return *this;
                     }
@@ -60,11 +60,11 @@ namespace imui {
             private:
                 State state_;
 
-                Scope &scope_;
+                Mgr &mgr_;
         };
 
-    template <typename Scope>
-        std::ostream &operator<<(std::ostream &os, const Reactor<Scope> &reactor)
+    template <typename Mgr>
+        std::ostream &operator<<(std::ostream &os, const Reactor<Mgr> &reactor)
         {
             reactor.stream(os);
             return os;

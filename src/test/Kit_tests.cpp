@@ -12,47 +12,39 @@ TEST_CASE("imui::Kit tests", "[ut][kit]")
     imui::backend::test::Native backend(100, 200);
     Kit::Context ctx(backend);
 
-    Kit::Scope scope(ctx);
-
-    Kit::Context::MousePosition mouse{};
-
-    REQUIRE(ctx.process(mouse));
+    Kit::ReactorMgr mgr(ctx);
 
     {
-        auto &reactor = scope(42);
+        Kit::DrawSentry draw_sentry(ctx);
+        auto &reactor = mgr(42);
     }
 
-    REQUIRE(ctx.process(mouse));
-
     {
+        Kit::DrawSentry draw_sentry(ctx);
         L("Initialization");
         bitset<2> bs;
-        auto &reactor = scope(42);
-        reactor.on(imui::Init(), [&](Kit::Tile &tile){bs.set(0);tile.set_aabb(0,0, 1,1);});
-        reactor.on(imui::Init(), [&](Kit::Tile &){bs.set(1);});
+        auto &reactor = mgr(42);
+        reactor.on(imui::Init(), [&](){bs.set(0); reactor.tile.set_aabb(0,0, 1,1);});
+        reactor.on(imui::Init(), [&](){bs.set(1);});
         REQUIRE(bs[0]);
         REQUIRE(!bs[1]);
     }
 
-    REQUIRE(ctx.process(mouse));
-
     {
+        Kit::DrawSentry draw_sentry(ctx);
         L("Check for hot");
-        auto &reactor = scope(42);
+        auto &reactor = mgr(42);
         bool is_hot = false;
-        reactor.on(imui::Hot(), [&](Kit::Tile &){is_hot = true;});
+        reactor.on(imui::Hot(), [&](){is_hot = true;});
         REQUIRE(!is_hot);
     }
 
-    REQUIRE(ctx.process(mouse));
-
     {
+        Kit::DrawSentry draw_sentry(ctx);
         L("Check for hot again");
-        auto &reactor = scope(42);
+        auto &reactor = mgr(42);
         bool is_hot = false;
-        reactor.on(imui::Hot(), [&](Kit::Tile &){is_hot = true;});
+        reactor.on(imui::Hot(), [&](){is_hot = true;});
         REQUIRE(is_hot);
     }
-
-    REQUIRE(ctx.process(mouse));
 }

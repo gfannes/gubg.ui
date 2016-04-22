@@ -16,12 +16,32 @@ namespace  {
             Window(): ctx_(*this)
             {
                 sf::RenderWindow::create(sf::VideoMode(400, 600), "imui::Context");
+                sf::RenderWindow::setView(sf::View(sf::FloatRect(0,0, 400,600)));
             }
 
             void draw()
             {
-                /* std::cout << "Drawing the window" << std::endl; */
-                /* ctx_.fill(); */
+                Kit::DrawSentry draw_sentry(ctx_);
+
+                const float f = 50;
+                const int r_end = 600/f;
+                const int c_end = 400/f;
+
+                for (int r = 0; r < r_end; ++r)
+                {
+                    for (int c = 0; c < c_end; ++c)
+                    {
+                        using namespace sf;
+                        const Vector2f xy{f*c,f*r};
+                        const Vector2f wh{f,f};
+                        sf::RectangleShape rect(wh);
+                        rect.setPosition(xy);
+                        auto &reactor = mgr_(r*c_end+c);
+                        reactor.on(imui::Init(), [&](){reactor.tile.set_aabb(xy.x,xy.y, wh.x,wh.y);});
+                        reactor.on(imui::Hot(), [&](){rect.setFillColor(sf::Color::Red);});
+                        sf::RenderWindow::draw(rect);
+                    }
+                }
             }
 
         protected:
@@ -36,6 +56,7 @@ namespace  {
         private:
             using Kit = imui::Kit<imui::backend::SFML>;
             Kit::Context ctx_;
+            Kit::ReactorMgr mgr_{ctx_};
     };
 } 
 
@@ -55,7 +76,7 @@ TEST_CASE("imui::Context tests", "[mt][ctx]")
         window.clear();
         window.draw();
         window.display();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
     /* sf::RenderWindow window(sf::VideoMode(800, 600), "imui::Context"); */
 }

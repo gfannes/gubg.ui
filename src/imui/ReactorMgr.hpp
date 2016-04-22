@@ -1,5 +1,5 @@
-#ifndef HEADER_imui_Scope_hpp_ALREADY_INCLUDED
-#define HEADER_imui_Scope_hpp_ALREADY_INCLUDED
+#ifndef HEADER_imui_ReactorMgr_hpp_ALREADY_INCLUDED
+#define HEADER_imui_ReactorMgr_hpp_ALREADY_INCLUDED
 
 #include "imui/Reactor.hpp"
 #include "imui/ID.hpp"
@@ -8,32 +8,29 @@
 namespace imui { 
 
     template <typename Context>
-        class Scope
+        class ReactorMgr
         {
             private:
-                static constexpr const char *logns = "Scope";
+                static constexpr const char *logns = "ReactorMgr";
 
             public:
-                using Self = Scope<Context>;
+                using Self = ReactorMgr<Context>;
                 using Reactor = imui::Reactor<Self>;
 
-                Scope(Context &ctx)
+                ReactorMgr(Context &ctx)
                     : ctx_(ctx)
                 {
                     ctx_.insert(this);
                 }
-                ~Scope()
+                ~ReactorMgr()
                 {
                     ctx_.erase(this);
                 }
 
                 Reactor &operator()(const ID &id)
                 {
-                    S(logns);
                     Reactor &reactor = reactors_.emplace(id, *this).first->second;
-                    L("Before processing by " << reactor);
                     ctx_.process(reactor);
-                    L("After processing by ctx: " << reactor);
                     return reactor;
                 }
 
