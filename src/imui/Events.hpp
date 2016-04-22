@@ -11,6 +11,10 @@ namespace imui {
     {
     };
 
+    struct Clicked
+    {
+    };
+
 } 
 
 #endif

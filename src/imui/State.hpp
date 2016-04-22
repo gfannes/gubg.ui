@@ -10,6 +10,12 @@ namespace imui {
         Fresh,
         Initialized,
         Hot,
+        Clicked,
+    };
+
+    enum class MouseButton
+    {
+        Up, Down, DragDown,
     };
 
     inline std::ostream &operator<<(std::ostream &os, State s)

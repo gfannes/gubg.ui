@@ -39,6 +39,9 @@ namespace  {
                         auto &reactor = mgr_(r*c_end+c);
                         reactor.on(imui::Init(), [&](){reactor.tile.set_aabb(xy.x,xy.y, wh.x,wh.y);});
                         reactor.on(imui::Hot(), [&](){rect.setFillColor(sf::Color::Red);});
+                        reactor.on(imui::Clicked(), [&](){std::cout << "Clicked" << std::endl; r_ = r; c_ = c;});
+                        if (r == r_ && c == c_)
+                            rect.setFillColor(sf::Color::Blue);
                         sf::RenderWindow::draw(rect);
                     }
                 }
@@ -57,6 +60,8 @@ namespace  {
             using Kit = imui::Kit<imui::backend::SFML>;
             Kit::Context ctx_;
             Kit::ReactorMgr mgr_{ctx_};
+            int r_ = -1;
+            int c_ = -1;
     };
 } 
 
@@ -71,12 +76,16 @@ TEST_CASE("imui::Context tests", "[mt][ctx]")
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::KeyPressed)
+                window.close();
+            if (event.type == sf::Event::MouseButtonPressed)
+                std::cout << "clicked" << std::endl;
         }
 
         window.clear();
         window.draw();
         window.display();
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        /* std::this_thread::sleep_for(std::chrono::milliseconds(20)); */
     }
     /* sf::RenderWindow window(sf::VideoMode(800, 600), "imui::Context"); */
 }

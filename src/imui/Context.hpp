@@ -35,6 +35,9 @@ namespace imui {
                     MSS(backend_.get_mouse_position(mouse_.current()));
                     L(STREAM(mouse_.current()[0], mouse_.current()[1]));
 
+                    left_button_.push();
+                    MSS(backend_.get_mouse_button(left_button_.current()));
+
                     MSS_END();
                 }
                 bool stop_draw()
@@ -60,7 +63,12 @@ namespace imui {
                         L(reactor << " contains the mouse");
                         last_hot_.current() = &reactor;
                         if (last_hot_.same())
-                            reactor.set_state(State::Hot);
+                        {
+                            if (left_button_.previous() == MouseButton::Down && left_button_.current() == MouseButton::Up)
+                                reactor.set_state(State::Clicked);
+                            else
+                                reactor.set_state(State::Hot);
+                        }
                     }
 
                     MSS_END();
@@ -91,6 +99,9 @@ namespace imui {
 
                 using LastHot = gubg::Transition<Reactor *>;
                 LastHot last_hot_;
+
+                using ButtonTrans = gubg::Transition<MouseButton>;
+                ButtonTrans left_button_;
         };
 
 } 

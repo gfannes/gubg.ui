@@ -29,6 +29,12 @@ namespace imui { namespace backend {
                 pos[1] = p.y;
                 MSS_END();
             }
+            bool get_mouse_button(MouseButton &button)
+            {
+                MSS_BEGIN(bool);
+                button = (sf::Mouse::isButtonPressed(sf::Mouse::Left) ? MouseButton::Down : MouseButton::Up);
+                MSS_END();
+            }
 
         private:
             sfml::RenderWindow &rw_;

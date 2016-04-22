@@ -2,6 +2,7 @@
 #define HEADER_imui_backend_Test_hpp_ALREADY_INCLUDED
 
 #include "imui/Types.hpp"
+#include "imui/State.hpp"
 #include "gubg/mss.hpp"
 
 namespace imui { namespace backend { 
@@ -29,6 +30,11 @@ namespace imui { namespace backend {
                 MSS_BEGIN(bool);
                 pos[0] = 0;
                 pos[1] = 0;
+                MSS_END();
+            }
+            bool get_mouse_button(MouseButton &button)
+            {
+                MSS_BEGIN(bool);
                 MSS_END();
             }
 

@@ -43,6 +43,17 @@ namespace imui {
                         }
                         return *this;
                     }
+                template <typename Callback>
+                    Reactor &on(Clicked, Callback cb)
+                    {
+                        S(logns);
+                        if (state_ == State::Clicked)
+                        {
+                            L("We are clicked");
+                            cb();
+                        }
+                        return *this;
+                    }
 
                 void stream(std::ostream &os) const
                 {
