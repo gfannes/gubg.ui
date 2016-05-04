@@ -44,6 +44,7 @@ task :declare do
     end
     publish('fonts', dst: 'fonts')
     publish('src/imui', dst: 'include/imui', pattern: '**/*.hpp')
+    publish('src/ui', dst: 'include/ui', pattern: '**/*.hpp')
 end
 
 task :define => :declare do
