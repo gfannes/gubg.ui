@@ -1,12 +1,12 @@
-#ifndef HEADER_ui_TextBox_hpp_ALREADY_INCLUDED
-#define HEADER_ui_TextBox_hpp_ALREADY_INCLUDED
+#ifndef HEADER_tui_TextBox_hpp_ALREADY_INCLUDED
+#define HEADER_tui_TextBox_hpp_ALREADY_INCLUDED
 
-#include "ui/Markup.hpp"
+#include "tui/Markup.hpp"
 #include "termbox.h"
 #include <string>
 #include <algorithm>
 
-namespace ui { 
+namespace tui { 
     class TextBox
     {
         public:

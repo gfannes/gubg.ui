@@ -1,9 +1,9 @@
-#ifndef HEADER_ui_Markup_hpp_ALREADY_INCLUDED
-#define HEADER_ui_Markup_hpp_ALREADY_INCLUDED
+#ifndef HEADER_tui_Markup_hpp_ALREADY_INCLUDED
+#define HEADER_tui_Markup_hpp_ALREADY_INCLUDED
 
 #include <vector>
 
-namespace ui { 
+namespace tui { 
 
     namespace markup { 
         struct Meta
