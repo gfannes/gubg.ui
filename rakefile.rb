@@ -10,6 +10,10 @@ task :help do
     puts("* define:")
 end
 
+task :clean do
+    rm_rf '.cache'
+end
+
 task :declare do
     build_ok_fn = 'gubg.build.ok'
     Dir.chdir(shared_dir('extern')) do
