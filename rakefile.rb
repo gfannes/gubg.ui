@@ -60,8 +60,9 @@ task :test => :declare do
     ut.set_cache_dir('.cache')
     case :debug
     when :debug
-        ut.add_define('DEBUG')
         ut.add_option('g')
+    else
+        ut.add_define('NDEBUG')
     end
     ut.add_include_path(shared_dir('include'))
     ut.add_sources(FileList.new('src/test/*_tests.cpp'))
