@@ -3,18 +3,16 @@ include GUBG
 require('gubg/build/Executable')
 require('gubg/build/Library')
 
-task :default => :help
-task :help do
-    puts("The following tasks can be specified:")
-    puts("* declare: SFML and local headers")
-    puts("* define:")
+task :default do
+    sh "rake -T"
 end
 
 task :clean do
     rm_rf '.cache'
 end
 
-task :declare do
+desc("Install SFML and local headers")
+task :prepare do
     build_ok_fn = 'gubg.build.ok'
     Dir.chdir(shared_dir('extern')) do
         git_clone('https://github.com/SFML', 'SFML') do
@@ -51,11 +49,11 @@ task :declare do
     publish('src/tui', dst: 'include/tui', pattern: '**/*.hpp')
 end
 
-task :define => :declare do
+task :define => :prepare do
     publish('src', pattern: '**/*.hpp', dst: 'include')
 end
 
-task :test => :declare do
+task :test => :prepare do
     ut = Build::Executable.new('test')
     ut.set_cache_dir('.cache')
     case :debug
