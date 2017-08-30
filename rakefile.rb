@@ -47,11 +47,9 @@ task :prepare do
     publish('fonts', dst: 'fonts')
     publish('src/imui', dst: 'include/imui', pattern: '**/*.hpp')
     publish('src/tui', dst: 'include/tui', pattern: '**/*.hpp')
-end
-
-task :define => :prepare do
     publish('src', pattern: '**/*.hpp', dst: 'include')
 end
+task :run
 
 task :test => :prepare do
     ut = Build::Executable.new('test')
