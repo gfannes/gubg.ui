@@ -1,0 +1,50 @@
+root.book("sfml", fun(b){
+    var mods = ["Audio", "Graphics", "Network", "System", "Window"]
+    for_each(mods, fun[b](mod){
+        b.recipe(mod, fun[mod](r){
+            r.add("extern/SFML/src", "SFML/${mod}/*.[hc]pp", Propagation.Private)
+            var myos = my(OS)
+            var os = "Unknown"
+            if (false) {}
+            else if (myos == OS.Linux)
+            {
+                r.include_path("/usr/include/AL")
+                r.remove("extern/SFML/src", "SFML/Window/Egl*.cpp")
+                os = "Unix"
+            }
+            else if (myos == OS.MacOS) {os = "OSX"}
+            else if (myos == OS.Windows) {os = "Win32"}
+            r.add("extern/SFML/src", "SFML/${mod}/${os}/*.[hc]pp", Propagation.Private)
+            r.add("extern/SFML/include", "SFML/${mod}/*.hpp")
+            for_each(["stb_image", "freetype2"], fun[r](str){
+                r.include_path("extern/SFML/extlibs/headers/${str}")
+            })
+        })
+    })
+    b.recipe("func", TargetType.Archive, fun[mods](r){
+        for_each(mods, fun[r](mod){
+            r.depends_on(mod)
+        })
+        for_each(["xcb", "xcb-randr", "xcb-image", "udev", "jpeg", "GL", "GLU", "Xrandr", "X11", "X11-xcb", "pthread", "openal", "freetype"], fun[r](lib){
+            r.library(lib)
+        })
+    })
+})
+
+root.book("termbox", fun(b){
+    b.recipe("func", TargetType.Archive, fun(r){
+        r.add("extern/termbox/src", "termbox.c")
+        r.add("extern/termbox/src", "utf8.c")
+        r.add("extern/termbox/src", "*.h")
+    })
+})
+
+root.book("gubg/ui", fun(b){
+    b.recipe("func", fun(r){
+    })
+    b.recipe("ut", fun(r){
+        r.add("test", "sfml/**.cpp")
+        r.depends_on("sfml/func")
+        r.depends_on("catch/func")
+    })
+})
