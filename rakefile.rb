@@ -15,6 +15,8 @@ desc("Prepare: clone SFML and termbox")
 task :prepare do
     Dir.chdir(GUBG::mkdir("extern")) do
         git_clone("https://github.com/SFML", "SFML")
+        git_clone("https://github.com/ocornut", "imgui")
+        git_clone("https://github.com/eliasdaler", "imgui-sfml")
         git_clone('https://github.com/nsf', 'termbox')
     end
     publish('fonts', dst: 'fonts')

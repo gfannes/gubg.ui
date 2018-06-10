@@ -32,6 +32,19 @@ root.book("sfml", fun(b){
     })
 })
 
+root.book("imgui", fun(b){
+    b.recipe("func", TargetType.Archive, fun(r){
+        r.add("extern/imgui", "*.cpp")
+        r.add("extern/imgui", "*.h")
+    })
+    b.recipe("sfml", TargetType.Archive, fun(r){
+        r.add("extern/imgui-sfml", "*.cpp")
+        r.add("extern/imgui-sfml", "*.h")
+        r.depends_on("func")
+        r.depends_on("sfml/func")
+    })
+})
+
 root.book("termbox", fun(b){
     b.recipe("func", TargetType.Archive, fun(r){
         r.add("extern/termbox/src", "termbox.c")
