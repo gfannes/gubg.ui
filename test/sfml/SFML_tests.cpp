@@ -17,7 +17,7 @@ TEST_CASE("sfml tests", "[ut][sfml]")
                 window.close();
         }
 
-        if (windowClock.getElapsedTime().asSeconds() >= 1)
+        if (windowClock.getElapsedTime().asSeconds() >= 0.5)
             window.close();
 
         window.clear();

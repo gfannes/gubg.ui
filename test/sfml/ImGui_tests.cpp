@@ -31,7 +31,7 @@ TEST_CASE("imgui-SFML tests", "[ut][imgui][sfml]")
             }
         }
 
-        if (windowClock.getElapsedTime().asSeconds() >= 1)
+        if (windowClock.getElapsedTime().asSeconds() >= 0.5)
             window.close();
 
         ImGui::SFML::Update(window, deltaClock.restart());
