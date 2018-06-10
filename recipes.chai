@@ -9,6 +9,7 @@ root.book("sfml", fun(b){
             else if (myos == OS.Linux)
             {
                 r.include_path("/usr/include/AL")
+                /* This gives problems with sf::Style::None because None is defined as a macro by X11.h apparently */
                 r.remove("extern/SFML/src", "SFML/Window/Egl*.cpp")
                 os = "Unix"
             }
