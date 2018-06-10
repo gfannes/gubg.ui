@@ -7,6 +7,7 @@ TEST_CASE("sfml tests", "[ut][sfml]")
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
+    sf::Clock windowClock;
     while (window.isOpen())
     {
         sf::Event event;
@@ -15,6 +16,9 @@ TEST_CASE("sfml tests", "[ut][sfml]")
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+
+        if (windowClock.getElapsedTime().asSeconds() >= 1)
+            window.close();
 
         window.clear();
         window.draw(shape);

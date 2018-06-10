@@ -20,6 +20,7 @@ TEST_CASE("imgui-SFML tests", "[ut][imgui][sfml]")
     window.setTitle(windowTitle);
     window.resetGLStates(); // call it if you only draw ImGui. Otherwise not needed.
     sf::Clock deltaClock;
+    sf::Clock windowClock;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -29,6 +30,9 @@ TEST_CASE("imgui-SFML tests", "[ut][imgui][sfml]")
                 window.close();
             }
         }
+
+        if (windowClock.getElapsedTime().asSeconds() >= 1)
+            window.close();
 
         ImGui::SFML::Update(window, deltaClock.restart());
 
