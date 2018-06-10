@@ -40,6 +40,7 @@ root.book("imgui", fun(b){
     b.recipe("sfml", TargetType.Archive, fun(r){
         r.add("extern/imgui-sfml", "*.cpp")
         r.add("extern/imgui-sfml", "*.h")
+        r.add("extern/imgui-sfml", "imconfig-SFML.h", Type.ForceInclude | Language.CXX)
         r.depends_on("func")
         r.depends_on("sfml/func")
     })
@@ -59,6 +60,7 @@ root.book("gubg/ui", fun(b){
     b.recipe("ut", fun(r){
         r.add("test", "sfml/**.cpp")
         r.depends_on("sfml/func")
+        r.depends_on("imgui/sfml")
         r.depends_on("catch/func")
     })
 })
