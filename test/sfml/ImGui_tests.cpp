@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 #include "SFML/Graphics.hpp"
+#include "gubg/imgui/SelectFile.hpp"
 
 TEST_CASE("imgui-SFML tests", "[ut][imgui][sfml]")
 {
@@ -17,6 +18,8 @@ TEST_CASE("imgui-SFML tests", "[ut][imgui][sfml]")
     // for instructions on using std::string with ImGui
     char windowTitle[255] = "ImGui + SFML = <3";
 
+    std::filesystem::path filename;
+
     window.setTitle(windowTitle);
     window.resetGLStates(); // call it if you only draw ImGui. Otherwise not needed.
     sf::Clock deltaClock;
@@ -31,12 +34,18 @@ TEST_CASE("imgui-SFML tests", "[ut][imgui][sfml]")
             }
         }
 
-        if (windowClock.getElapsedTime().asSeconds() >= 0.5)
+        if (false && windowClock.getElapsedTime().asSeconds() >= 0.5)
             window.close();
 
         ImGui::SFML::Update(window, deltaClock.restart());
 
         ImGui::Begin("Sample window"); // begin window
+
+        if (gubg::imgui::select_file("Open file", filename))
+        {
+        }
+        ImGui::SameLine();
+        ImGui::Text("filename: %s", filename.string().c_str());
 
         // Background color edit
         if (ImGui::ColorEdit3("Background color", color)) {
