@@ -24,7 +24,6 @@ namespace gubg { namespace imgui {
 
         if (state.active())
         {
-            ImGui::SetNextWindowSize(ImGui::GetWindowSize());
             ImGui::Begin("Select file");
 
             if (ImGui::Button("Cancel"))
