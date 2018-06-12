@@ -18,17 +18,17 @@ namespace gubg { namespace imgui {
         auto dir = state.directory();
 
         if (ImGui::Button(str_id))
-        {
             state.active(!state.active());
-            ImGui::OpenPopup(str_id);
-        }
 
-        bool res = false;
+        bool file_was_selected = false;
 
-        if (ImGui::BeginPopupModal(str_id))
+        if (state.active())
         {
+            ImGui::SetNextWindowSize(ImGui::GetWindowSize());
+            ImGui::Begin("Select file");
+
             if (ImGui::Button("Cancel"))
-                ImGui::CloseCurrentPopup();
+                state.active(false);
 
             if (ImGui::Button(".."))
             {
@@ -74,8 +74,8 @@ namespace gubg { namespace imgui {
                             if (ImGui::Selectable(fn.string().c_str()))
                             {
                                 filename = fn;
-                                res = true;
-                                ImGui::CloseCurrentPopup();
+                                file_was_selected = true;
+                                state.active(false);
                             }
                     }
                 }
@@ -87,12 +87,12 @@ namespace gubg { namespace imgui {
             }
             ImGui::PopItemWidth();
 
-            ImGui::EndPopup();
+            ImGui::End();
         }
 
         state.directory(dir);
 
-        return res;
+        return file_was_selected;
     }
 
 } } 
