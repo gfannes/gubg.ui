@@ -58,6 +58,21 @@ namespace gubg { namespace imgui {
             ImGui::SameLine();
             ImGui::Text("filename: %s", fn.string().c_str());
 
+            std::set<std::filesystem::path> directories, files;
+            for (const auto &dirent: std::filesystem::directory_iterator(dir))
+            {
+                const auto p = dirent.path();
+                const auto fn = p.filename();
+                const auto fn_str = fn.string();
+                if (!fn_str.empty() && fn_str[0] != '.')
+                {
+                    if (is_directory(p))
+                        directories.insert(fn);
+                    else if (is_regular_file(p))
+                        files.insert(fn);
+                }
+            }
+
             auto size = ImGui::GetContentRegionAvail();
             size.x *= 0.5;
             ImGui::PushItemWidth(size.x*0.5);
@@ -66,16 +81,9 @@ namespace gubg { namespace imgui {
                 ImGui::Text("Directories:");
                 try
                 {
-                    for (const auto &dirent: std::filesystem::directory_iterator(dir))
-                    {
-                        auto p = dirent.path();
-                        if (is_directory(p))
-                        {
-                            p = p.filename();
-                            if (ImGui::Selectable(p.string().c_str()))
-                                dir /= p;
-                        }
-                    }
+                    for (const auto &d: directories)
+                        if (ImGui::Selectable(d.string().c_str()))
+                            dir /= d;
                 }
                 catch (const std::exception& exc)
                 {
@@ -89,16 +97,9 @@ namespace gubg { namespace imgui {
                 ImGui::Text("Files:");
                 try
                 {
-                    for (const auto &dirent: std::filesystem::directory_iterator(dir))
-                    {
-                        auto p = dirent.path();
-                        if (is_regular_file(p))
-                        {
-                            p = p.filename();
-                            if (ImGui::Selectable(p.string().c_str()))
-                                fn = p;
-                        }
-                    }
+                    for (const auto &f: files)
+                        if (ImGui::Selectable(f.string().c_str()))
+                            fn = f;
                 }
                 catch (const std::exception& exc)
                 {
