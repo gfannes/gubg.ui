@@ -14,7 +14,17 @@ root.book("sfml", fun(b){
                 os = "Unix"
             }
             else if (myos == OS.MacOS) {os = "OSX"}
-            else if (myos == OS.Windows) {os = "Win32"}
+            else if (myos == OS.Windows)
+            {
+                r.include_path("extern/SFML/extlibs/headers/AL")
+                r.include_path("extern/SFML/extlibs/headers")
+                r.remove("extern/SFML/src", "SFML/Window/EGL*.cpp")
+                r.remove("extern/SFML/src", "SFML/Window/Egl*.cpp")
+                r.define("SFML_STATIC")
+                r.define("UNICODE")
+                r.define("_UNICODE")
+                os = "Win32"
+            }
             r.add("extern/SFML/src", "SFML/${mod}/${os}/*.[hc]pp", Propagation.Private)
             r.add("extern/SFML/include", "SFML/${mod}/*.hpp")
             for_each(["stb_image", "freetype2"], fun[r](str){
@@ -26,9 +36,16 @@ root.book("sfml", fun(b){
         for_each(mods, fun[r](mod){
             r.depends_on(mod)
         })
-        for_each(["xcb", "xcb-randr", "xcb-image", "udev", "jpeg", "GL", "GLU", "Xrandr", "X11", "X11-xcb", "pthread", "openal", "freetype"], fun[r](lib){
-            r.library(lib)
-        })
+        var libs
+        if (my(OS) == OS.Linux){
+            libs = ["xcb", "xcb-randr", "xcb-image", "udev", "jpeg", "GL", "GLU", "Xrandr", "X11", "X11-xcb", "pthread", "openal", "freetype"]
+        }
+        else if (my(OS) == OS.Windows){
+            libs = ["winmm", "advapi32", "gdi32", "opengl32"]
+        }
+            for_each(libs, fun[r](lib){
+                r.library(lib)
+            })
     })
 })
 

@@ -1,7 +1,6 @@
-require(File.join(ENV['gubg'], 'shared'))
+require_relative("../gubg.build/bootstrap.rb")
+require("gubg/shared")
 include GUBG
-require('gubg/build/Executable')
-require('gubg/build/Library')
 
 task :default do
     sh "rake -T"
