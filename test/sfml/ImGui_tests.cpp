@@ -126,4 +126,5 @@ TEST_CASE("imgui-SFML tests", "[ut][imgui][sfml]")
         window.display();
     }
 
-    ImGui::SFML::Shutdown();}
+    ImGui::SFML::Shutdown();
+}
