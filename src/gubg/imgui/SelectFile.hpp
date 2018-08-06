@@ -4,6 +4,7 @@
 #include "gubg/imgui/State.hpp"
 #include "imgui.h"
 #include <string>
+#include <set>
 
 namespace gubg { namespace imgui { 
 
