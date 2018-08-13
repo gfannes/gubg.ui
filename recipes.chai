@@ -41,7 +41,8 @@ root.book("sfml", fun(b){
             libs = ["xcb", "xcb-randr", "xcb-image", "udev", "jpeg", "GL", "GLU", "Xrandr", "X11", "X11-xcb", "pthread", "openal", "freetype"]
         }
         else if (my(OS) == OS.Windows){
-            libs = ["winmm", "advapi32", "gdi32", "opengl32"]
+            libs = ["winmm", "advapi32", "gdi32", "opengl32", "freetype"]
+            r.library_path("${getenv("gubg")}/gubg.ui/extern/SFML/extlibs/libs-msvc/x64")
         }
             for_each(libs, fun[r](lib){
                 r.library(lib)
