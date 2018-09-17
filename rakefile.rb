@@ -9,6 +9,9 @@ end
 task :clean do
     rm_rf '.cache'
 end
+task :proper do
+    rm_rf "extern"
+end
 
 desc("Prepare: clone SFML and termbox")
 task :prepare do
