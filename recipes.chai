@@ -38,7 +38,7 @@ root.book("sfml", fun(b){
         })
         var libs
         if (my(OS) == OS.Linux){
-            libs = ["xcb", "xcb-randr", "xcb-image", "udev", "jpeg", "GL", "GLU", "Xrandr", "X11", "X11-xcb", "pthread", "openal", "freetype"]
+            libs = ["xcb", "xcb-randr", "xcb-image", "udev", "jpeg", "GL", "GLU", "Xrandr", "X11", "X11-xcb", "pthread", "openal", "freetype", "EGL"]
         }
         else if (my(OS) == OS.Windows){
             libs = ["winmm", "advapi32", "gdi32", "opengl32", "freetype"]
