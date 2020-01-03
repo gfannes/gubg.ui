@@ -44,6 +44,11 @@ namespace gubg { namespace sfml {
     {
         drawable.setPosition(rect.left, rect.top);
     }
+    template <typename Widget, typename T>
+    void set_bb(Widget &widget, const sf::Rect<T> &rect)
+    {
+        widget.set_bb(rect);
+    }
 
 } } 
 
