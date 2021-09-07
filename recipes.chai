@@ -54,7 +54,7 @@ root.book("sfml", fun(b){
     else
     {
         b.recipe("func", fun(rcp){
-            var extra_libs
+            var extra_libs = []
             if (my(OS) == OS.Linux){
                 extra_libs = ["xcb", "xcb-randr", "xcb-image", "udev", "jpeg", "GL", "GLU", "Xrandr", "X11", "X11-xcb", "pthread", "openal", "freetype", "EGL"]
             }
