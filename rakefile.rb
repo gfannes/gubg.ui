@@ -1,6 +1,6 @@
 require_relative("../gubg.build/bootstrap.rb")
 require("gubg/shared")
-include GUBG
+include Gubg
 
 task :default do
     sh "rake -T"
@@ -15,7 +15,7 @@ end
 
 desc("Prepare: clone SFML and termbox")
 task :prepare do
-    Dir.chdir(GUBG::mkdir("extern")) do
+    Dir.chdir(Gubg::mkdir("extern")) do
         git_clone("https://github.com/SFML", "SFML")
         git_clone("https://github.com/ocornut", "imgui")
         git_clone("https://github.com/eliasdaler", "imgui-sfml")
