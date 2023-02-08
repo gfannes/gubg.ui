@@ -9,6 +9,9 @@ namespace :ui do
 			Gubg.git_clone("https://github.com/ocornut", "imgui")
 			Gubg.git_clone("https://github.com/eliasdaler", "imgui-sfml")
 			Gubg.git_clone('https://github.com/nsf', 'termbox')
+			Gubg.git_clone('https://github.com/s9w', 'oof') do
+                sh "git pull --rebase"
+            end
 		end
 		Gubg.publish(here, 'fonts', dst: 'fonts')
 		Gubg.publish(here, 'src/imui', dst: 'include/imui', pattern: '**/*.hpp')
