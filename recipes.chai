@@ -101,15 +101,16 @@ root.recipe("oof", fun(rcp){
 
 root.book("gubg/ui", fun(b){
     b.recipe("func", fun(r){
-        r.add("src", "gubg/**.[hc]pp")
-        r.depends_on("gubg/io/func")
-        r.depends_on("sfml/func")
-        r.depends_on("imgui/sfml")
-        r.depends_on("oof")
+        // oof gives unresolved symbols in release mode: disabled for now
+        // r.add("src", "gubg/**.[hc]pp")
+        // r.depends_on("gubg/io/func")
+        // r.depends_on("sfml/func")
+        // r.depends_on("imgui/sfml")
+        // r.depends_on("oof")
     })
     b.recipe("ut", fun(r){
-        r.add("test", "sfml/**.cpp")
-        r.depends_on("func")
-        r.depends_on("catch/func")
+        // r.add("test", "sfml/**.cpp")
+        // r.depends_on("func")
+        // r.depends_on("catch/func")
     })
 })
