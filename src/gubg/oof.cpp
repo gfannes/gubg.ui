@@ -8,3 +8,5 @@ template void oof::write_sequence_into_string<std::string, oof::reset_sequence>(
 template void oof::write_sequence_into_string<std::string, oof::clear_screen_sequence>(std::string &, const oof::clear_screen_sequence &);
 template void oof::write_sequence_into_string<std::string, oof::position_sequence>(std::string &, const oof::position_sequence &);
 template void oof::write_sequence_into_string<std::string, oof::bold_sequence>(std::string &, const oof::bold_sequence &);
+template void oof::write_sequence_into_string<std::string, oof::fg_rgb_color_sequence>(std::string &, const oof::fg_rgb_color_sequence &);
+
