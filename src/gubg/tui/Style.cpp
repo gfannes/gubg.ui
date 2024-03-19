@@ -1,5 +1,6 @@
 #include <gubg/tui/Style.hpp>
 
+#include <stdint.h>
 #include <oof.h>
 
 namespace gubg { namespace tui {

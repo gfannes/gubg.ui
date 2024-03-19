@@ -3,6 +3,7 @@
 #include <gubg/mss.hpp>
 #include <gubg/naft/Document.hpp>
 
+#include <stdint.h>
 #include <oof.h>
 
 #include <sys/ioctl.h>
