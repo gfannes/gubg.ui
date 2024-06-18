@@ -1,5 +1,5 @@
-#ifndef HEADER_gubg_tui_Style_hpp_ALREAD_INCLUDED
-#define HEADER_gubg_tui_Style_hpp_ALREAD_INCLUDED
+#ifndef HEADER_gubg_tui_Style_hpp_ALREADY_INCLUDED
+#define HEADER_gubg_tui_Style_hpp_ALREADY_INCLUDED
 
 #include <ostream>
 
